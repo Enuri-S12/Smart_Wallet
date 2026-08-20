@@ -1,0 +1,105 @@
+services:
+  wallet-db:
+    image: mysql:8.4
+    container_name: wallet-db
+    environment:
+      MYSQL_DATABASE: wallet_db
+      MYSQL_USER: wallet_user
+      MYSQL_PASSWORD: wallet_password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - '3307:3306'
+    volumes:
+      - wallet-db-data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'mysqladmin',
+          'ping',
+          '-h',
+          'localhost',
+          '-uroot',
+          '-prootpassword',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  transaction-service:
+    build:
+      context: .
+      dockerfile: transaction-service/Dockerfile
+    container_name: transaction-service
+    ports:
+      - '8085:8085'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://wallet-db:3306/wallet_db?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: wallet_user
+      SPRING_DATASOURCE_PASSWORD: wallet_password
+    depends_on:
+      wallet-db:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8085/actuator/health']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  deposit-service:
+    build:
+      context: .
+      dockerfile: deposit-service/Dockerfile
+    container_name: deposit-service
+    ports:
+      - '8082:8082'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://wallet-db:3306/wallet_db?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: wallet_user
+      SPRING_DATASOURCE_PASSWORD: wallet_password
+      TRANSACTION_SERVICE_BASE_URL: http://transaction-service:8085
+    depends_on:
+      wallet-db:
+        condition: service_healthy
+      transaction-service:
+        condition: service_healthy
+
+  withdrawal-service:
+    build:
+      context: .
+      dockerfile: withdrawal-service/Dockerfile
+    container_name: withdrawal-service
+    ports:
+      - '8084:8084'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://wallet-db:3306/wallet_db?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: wallet_user
+      SPRING_DATASOURCE_PASSWORD: wallet_password
+      TRANSACTION_SERVICE_BASE_URL: http://transaction-service:8085
+    depends_on:
+      wallet-db:
+        condition: service_healthy
+      transaction-service:
+        condition: service_healthy
+
+  transfer-service:
+    build:
+      context: .
+      dockerfile: transfer-service/Dockerfile
+    container_name: transfer-service
+    ports:
+      - '8086:8086'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://wallet-db:3306/wallet_db?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: wallet_user
+      SPRING_DATASOURCE_PASSWORD: wallet_password
+      TRANSACTION_SERVICE_BASE_URL: http://transaction-service:8085
+    depends_on:
+      wallet-db:
+        condition: service_healthy
+      transaction-service:
+        condition: service_healthy
+
+volumes:
+  wallet-db-data:

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.smartwallet.withdrawalservice.service.WalletBalanceServiceTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.328 s -- in com.smartwallet.withdrawalservice.service.WalletBalanceServiceTest

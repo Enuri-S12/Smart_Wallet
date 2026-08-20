@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.smartwallet.transactionservice.TransactionServiceIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.613 s -- in com.smartwallet.transactionservice.TransactionServiceIntegrationTest

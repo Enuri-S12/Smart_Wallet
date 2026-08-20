@@ -1,0 +1,7 @@
+com\smartwallet\transactionservice\exception\GlobalExceptionHandler.class
+com\smartwallet\transactionservice\controller\TransactionController.class
+com\smartwallet\transactionservice\entity\WalletTransaction.class
+com\smartwallet\transactionservice\repository\WalletRepository.class
+com\smartwallet\transactionservice\service\TransactionService.class
+com\smartwallet\transactionservice\TransactionserviceApplication.class
+com\smartwallet\transactionservice\repository\WalletTransactionRepository.class

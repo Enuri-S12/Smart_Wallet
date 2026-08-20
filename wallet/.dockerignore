@@ -1,0 +1,6 @@
+target
+**/target
+.git
+.mvn
+walletservice
+*.md

@@ -1,0 +1,9 @@
+com\smartwallet\common\dto\TransactionResponse.class
+com\smartwallet\common\dto\CreateTransactionRequest.class
+com\smartwallet\common\entity\Wallet.class
+com\smartwallet\common\exception\WalletNotFoundException.class
+com\smartwallet\common\dto\CreateWalletRequest.class
+com\smartwallet\common\dto\AmountRequest.class
+com\smartwallet\common\exception\InsufficientFundsException.class
+com\smartwallet\common\enums\TransactionType.class
+com\smartwallet\common\dto\WalletResponse.class
